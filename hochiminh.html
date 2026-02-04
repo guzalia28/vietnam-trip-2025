@@ -1,0 +1,2096 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Хошимин 🛍️ | Vietnam Trip 2025</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Additional styles for detailed guide */
+        .day-header {
+            background: linear-gradient(135deg, var(--pink-main) 0%, var(--blue-main) 100%);
+            padding: 40px 30px;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+            color: white;
+            text-align: center;
+        }
+
+        .day-header h2 {
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .day-header .day-subtitle {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+
+        .day-overview {
+            background: var(--blue-light);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .day-overview h3 {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .overview-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .overview-item {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            padding: 10px 15px;
+            background: white;
+            border-radius: 10px;
+        }
+
+        .overview-time {
+            font-weight: 600;
+            color: var(--pink-dark);
+            min-width: 70px;
+        }
+
+        .overview-place {
+            flex: 1;
+        }
+
+        .overview-duration {
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        .location-card {
+            background: white;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+        }
+
+        .location-header {
+            background: linear-gradient(135deg, var(--pink-light) 0%, var(--purple-light) 100%);
+            padding: 25px;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .location-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--pink-main), var(--pink-dark));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .location-title h3 {
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+        }
+
+        .location-badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .location-badge {
+            background: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .location-links {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .location-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .location-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .location-link.instagram {
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            color: white;
+        }
+
+        .location-link.maps {
+            background: #4285f4;
+            color: white;
+        }
+
+        .location-body {
+            padding: 25px;
+        }
+
+        .location-photo {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .location-photo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .location-photo-grid img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .photo-single {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .location-desc {
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .info-item {
+            background: var(--pink-light);
+            padding: 15px;
+            border-radius: 12px;
+        }
+
+        .info-item-label {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+
+        .info-item-value {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .directions-box {
+            background: var(--blue-light);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .directions-box h4 {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .directions-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .direction-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--blue-main);
+        }
+
+        .direction-step:last-child {
+            border-bottom: none;
+        }
+
+        .direction-icon {
+            font-size: 1.1rem;
+        }
+
+        .stores-section {
+            margin-bottom: 25px;
+        }
+
+        .stores-section h4 {
+            margin-bottom: 15px;
+        }
+
+        .store-card {
+            background: var(--cream);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .store-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .store-name {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .store-style {
+            background: var(--pink-main);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.7rem;
+        }
+
+        .store-desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .store-price {
+            font-size: 0.85rem;
+            color: var(--pink-dark);
+            margin-top: 5px;
+        }
+
+        .tip-box {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .tip-box.blue {
+            background: linear-gradient(135deg, var(--blue-light), #d4edfc);
+        }
+
+        .tip-box.green {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+        }
+
+        .tip-icon {
+            font-size: 1.5rem;
+        }
+
+        .tip-content h5 {
+            margin-bottom: 5px;
+            color: var(--text-dark);
+        }
+
+        .tip-content p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .food-recommendation {
+            background: var(--mint);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .food-recommendation h4 {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .food-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px dashed #4caf50;
+        }
+
+        .food-item:last-child {
+            border-bottom: none;
+        }
+
+        .food-name {
+            font-weight: 500;
+        }
+
+        .food-price {
+            color: #2e7d32;
+        }
+
+        .cafe-highlight {
+            background: linear-gradient(135deg, var(--purple-light), var(--pink-light));
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .cafe-highlight h3 {
+            margin-bottom: 15px;
+        }
+
+        .transport-info {
+            background: #e3f2fd;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 30px 0;
+        }
+
+        .transport-info h4 {
+            margin-bottom: 15px;
+            color: #1976d2;
+        }
+
+        .transport-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #bbdefb;
+        }
+
+        .transport-row:last-child {
+            border-bottom: none;
+        }
+
+        .back-link {
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            opacity: 0.9;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+        }
+
+        .header-small {
+            padding: 40px 20px 60px;
+        }
+
+        .header-small h1 {
+            font-size: 2.5rem;
+        }
+
+        .nav-link.active {
+            background: var(--pink-light);
+            color: var(--pink-dark);
+        }
+
+        .section-divider {
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .section-divider span {
+            font-size: 2rem;
+        }
+
+        .historical-card {
+            background: linear-gradient(135deg, #fff8e1, #ffecb3);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .historical-card h4 {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .photo-spots {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .photo-spot {
+            background: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header header-small">
+        <div class="header-content">
+            <a href="index.html" class="back-link">← Назад к маршруту</a>
+            <div class="header-decoration">🛍️</div>
+            <h1>Хошимин</h1>
+            <p class="subtitle">Шоппинг-дни из Бенче</p>
+        </div>
+        <div class="header-wave">
+            <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+                <path d="M0,64 C480,150 960,-20 1440,64 L1440,120 L0,120 Z" fill="#fff5f8"/>
+            </svg>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-link">🏠 Главная</a>
+            <a href="nhatrang.html" class="nav-link">🏖️ Нячанг</a>
+            <a href="hochiminh.html" class="nav-link active">🛍️ Хошимин</a>
+            <a href="#day1" class="nav-link">День 1</a>
+            <a href="#day2" class="nav-link">День 2</a>
+        </div>
+    </nav>
+
+    <main class="main-content">
+
+        <!-- Transport Info -->
+        <section class="section">
+            <div class="transport-info">
+                <h4>🚌 Автобус Бенче ↔ Хошимин</h4>
+                <div class="transport-row">
+                    <span>Время в пути</span>
+                    <span><strong>2-2.5 часа</strong> в одну сторону</span>
+                </div>
+                <div class="transport-row">
+                    <span>Автовокзал в Хошимине</span>
+                    <span><strong>Miền Tây</strong> (District 6) или <strong>District 5</strong></span>
+                </div>
+                <div class="transport-row">
+                    <span>Рекомендуемый выезд</span>
+                    <span>~7:00-8:00 утра</span>
+                </div>
+                <div class="transport-row">
+                    <span>Обратно выезжать</span>
+                    <span>~18:00-19:00</span>
+                </div>
+                <div class="transport-row">
+                    <span>Время на город</span>
+                    <span><strong>~8 часов</strong></span>
+                </div>
+            </div>
+
+            <div class="transport-info" style="background: linear-gradient(135deg, #e8f5e9, #c8e6c9); margin-top: 20px;">
+                <h4>🚇 Метро Хошимина (Линия 1)</h4>
+                <p style="margin-bottom: 15px; font-size: 0.9rem; color: var(--text-light);">Первая линия метро открылась в декабре 2024! Удобно для передвижения по центру.</p>
+                <div class="transport-row" style="border-color: #81c784;">
+                    <span>Маршрут</span>
+                    <span><strong>Bến Thành ↔ Suối Tiên</strong> (14 станций)</span>
+                </div>
+                <div class="transport-row" style="border-color: #81c784;">
+                    <span>Полезные станции</span>
+                    <span><strong>Bến Thành</strong> (рынок) • <strong>Opera House</strong> (26 LTT рядом!)</span>
+                </div>
+                <div class="transport-row" style="border-color: #81c784;">
+                    <span>Время работы</span>
+                    <span>5:00 – 23:00</span>
+                </div>
+                <div class="transport-row" style="border-color: #81c784;">
+                    <span>Билет</span>
+                    <span><strong>7,000 – 20,000 ₫</strong> (зависит от расстояния)</span>
+                </div>
+                <div class="tip-box green" style="margin-top: 15px; margin-bottom: 0;">
+                    <span class="tip-icon">💡</span>
+                    <div class="tip-content">
+                        <h5>Как использовать</h5>
+                        <p>Метро не идёт до автовокзала Miền Tây, но удобно между точками в центре! Например: <strong>Bến Thành → Opera House</strong> (2 мин) — выходишь прямо у 26 Lý Tự Trọng и Cafe Apartment.</p>
+                    </div>
+                </div>
+                <div class="location-links" style="margin-top: 15px;">
+                    <a href="https://maps.app.goo.gl/bTqHLR8mJnNHj1mm9" target="_blank" class="location-link maps"><i class="fas fa-subway"></i> Станция Bến Thành</a>
+                    <a href="https://maps.app.goo.gl/7VqXdNqgYF7RULQXA" target="_blank" class="location-link maps"><i class="fas fa-subway"></i> Станция Opera House</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== DAY 1 ==================== -->
+        <section id="day1" class="section">
+
+            <div class="day-header">
+                <h2>🛍️ День 1</h2>
+                <p class="day-subtitle">District 1 + District 3 • Локальные бренды • K-style • Кои-кафе</p>
+            </div>
+
+            <!-- Day Overview -->
+            <div class="day-overview">
+                <h3>📋 План дня</h3>
+                <div class="overview-timeline">
+                    <div class="overview-item">
+                        <span class="overview-time">7:00</span>
+                        <span class="overview-place">🚌 Автобус из Бенче</span>
+                        <span class="overview-duration">2-2.5ч</span>
+                    </div>
+                    <div class="overview-item">
+                        <span class="overview-time">~9:30</span>
+                        <span class="overview-place">📍 Приезд → Grab в District 1</span>
+                        <span class="overview-duration">20 мин</span>
+                    </div>
+                    <div class="overview-item">
+                        <span class="overview-time">10:00</span>
+                        <span class="overview-place">🏛️ 26 Lý Tự Trọng</span>
+                        <span class="overview-duration">1.5-2ч</span>
+                    </div>
+                    <div class="overview-item">
+                        <span class="overview-time">12:00</span>
+                        <span class="overview-place">🍳 Бранч: L'Usine</span>
+                        <span class="overview-duration">1ч</span>
+                    </div>
+                    <div class="overview-item">
+                        <span class="overview-time">13:00</span>
+                        <span class="overview-place">🏢 MUJI + Vincom</span>
+                        <span class="overview-duration">45 мин</span>
+                    </div>
+                    <div class="overview-item">
+                        <span class="overview-time">13:45</span>
+                        <span class="overview-place">🎀 42 Tôn Thất Thiệp + Thrift Mall</span>
+                        <span class="overview-duration">1.5ч</span>
+                    </div>
+                    <div class="overview-item">
+                        <span class="overview-time">15:15</span>
+                        <span class="overview-place">📸 Cafe Apartment</span>
+                        <span class="overview-duration">45 мин</span>
+                    </div>
+                    <div class="overview-item">
+                        <span class="overview-time">16:00</span>
+                        <span class="overview-place">🚕 Grab → District 3</span>
+                        <span class="overview-duration">15 мин</span>
+                    </div>
+                    <div class="overview-item">
+                        <span class="overview-time">16:15</span>
+                        <span class="overview-place">🇰🇷 Trần Quang Diệu Street</span>
+                        <span class="overview-duration">1.5ч</span>
+                    </div>
+                    <div class="overview-item">
+                        <span class="overview-time">17:45</span>
+                        <span class="overview-place">🐟 Oasis Cafe (кои-рыбки)</span>
+                        <span class="overview-duration">1ч</span>
+                    </div>
+                    <div class="overview-item">
+                        <span class="overview-time">19:00</span>
+                        <span class="overview-place">🚌 Автовокзал → Бенче</span>
+                        <span class="overview-duration"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Location 1: 26 Ly Tu Trong -->
+            <div class="location-card">
+                <img src="https://rawrnie.com/cdn/shop/articles/26-Ly-Tu-Trong.jpg?v=1584508237" alt="26 Lý Tự Trọng Saigon" class="location-photo">
+                <div class="location-header">
+                    <div class="location-number">1</div>
+                    <div class="location-title">
+                        <h3>Chung cư 26 Lý Tự Trọng</h3>
+                        <div class="location-badges">
+                            <span class="location-badge">⭐ Главная точка</span>
+                            <span class="location-badge">🏛️ Историческое</span>
+                            <span class="location-badge">👗 20+ брендов</span>
+                        </div>
+                        <div class="location-links">
+                            <a href="https://maps.app.goo.gl/vqLrMzRsJ8Ld1bQb7" target="_blank" class="location-link maps"><i class="fas fa-map-marker-alt"></i> Google Maps</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="location-body">
+                    <div class="location-photo-grid">
+                        <img src="https://cdn.shopify.com/s/files/1/0127/9724/7588/files/26-Ly-Tu-Trong-1_large.jpg?v=1584508187" alt="26 Ly Tu Trong внутри">
+                        <img src="https://cdn.shopify.com/s/files/1/0127/9724/7588/files/26-Ly-Tu-Trong-2_large.jpg?v=1584508162" alt="26 Ly Tu Trong магазины">
+                    </div>
+                    <p class="location-desc">
+                        Историческое здание 1920-х годов — <strong>бывшее консульство США до 1975 года</strong>. Сегодня здесь 20+ магазинов локальных вьетнамских брендов. Атмосфера: старинные махагоновые панели, индокитайская плитка, винтажный лифт. С верхних этажей открывается вид на место знаменитого фото «Падение Сайгона» 1975 года.
+                    </p>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-item-label">📍 Адрес</div>
+                            <div class="info-item-value">26 Lý Tự Trọng, Bến Nghé, Quận 1</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">🕐 Время работы</div>
+                            <div class="info-item-value">9:00 – 21:30</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">⏱️ Сколько времени</div>
+                            <div class="info-item-value">1.5–2 часа</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">💰 Цены</div>
+                            <div class="info-item-value">200,000 – 800,000 ₫</div>
+                        </div>
+                    </div>
+
+                    <div class="directions-box">
+                        <h4>🚕 Как добраться от автовокзала</h4>
+                        <div class="directions-steps">
+                            <div class="direction-step">
+                                <span class="direction-icon">📱</span>
+                                <span>Открой <strong>Grab</strong> → Введи "26 Ly Tu Trong District 1"</span>
+                            </div>
+                            <div class="direction-step">
+                                <span class="direction-icon">💰</span>
+                                <span>~35,000–50,000 ₫ (Grab Car) / ~25,000 ₫ (Grab Bike)</span>
+                            </div>
+                            <div class="direction-step">
+                                <span class="direction-icon">⏱️</span>
+                                <span>15–20 минут</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tip-box">
+                        <span class="tip-icon">🔍</span>
+                        <div class="tip-content">
+                            <h5>Как найти вход</h5>
+                            <p>Ищи старое колониальное здание <strong>жёлто-белого цвета</strong> с решётками. Главная арка с номером "26" над дверью. Лифт старинный (~3,000 ₫ за проезд) — или иди по лестнице, так увидишь все витрины!</p>
+                        </div>
+                    </div>
+
+                    <div class="stores-section">
+                        <h4>🏪 Магазины</h4>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">Libé</span>
+                                <span class="store-style">Минимализм</span>
+                            </div>
+                            <p class="store-desc">Элегантные платья, качественные ткани. «Вьетнамская Aritzia по ценам Forever 21»</p>
+                            <p class="store-price">💰 200–800k ₫ • 📍 1 этаж</p>
+                        </div>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">Naked by V</span>
+                                <span class="store-style">Cottagecore</span>
+                            </div>
+                            <p class="store-desc">Женственные платья, деним, цветочные принты, романтичный стиль</p>
+                            <p class="store-price">💰 300–600k ₫ • 📍 2-3 этаж</p>
+                        </div>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">Polkaholics</span>
+                                <span class="store-style">Ретро</span>
+                            </div>
+                            <p class="store-desc">Винтажные принты, платья в горошек</p>
+                            <p class="store-price">💰 250–500k ₫</p>
+                        </div>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">Sexy Forever</span>
+                                <span class="store-style">Вечерний</span>
+                            </div>
+                            <p class="store-desc">Платья для выхода</p>
+                            <p class="store-price">💰 300–700k ₫</p>
+                        </div>
+                    </div>
+
+                    <div class="tip-box blue">
+                        <span class="tip-icon">⬇️</span>
+                        <div class="tip-content">
+                            <h5>The New Playground — в ПОДВАЛЕ!</h5>
+                            <p>Первый подземный торговый комплекс Сайгона! 1,000 м², 40+ стендов. Неоновые вывески, бетонные стены, индустриальная эстетика. <strong>Вход слева от главного входа</strong> — ищи лестницу вниз!</p>
+                        </div>
+                    </div>
+
+                    <div class="stores-section">
+                        <h4>🌟 В The New Playground (подвал)</h4>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">She by Shj</span>
+                                <span class="store-style">Y2K</span>
+                            </div>
+                            <p class="store-desc">Яркие цвета, ленты, кружево. Влажноотводящие ткани, японский хлопок</p>
+                            <p class="store-price">💰 250–400k ₫ • Для девушек 18-28</p>
+                        </div>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">Bloomode</span>
+                                <span class="store-style">Streetwear</span>
+                            </div>
+                            <p class="store-desc">«In Street We Trust» — чёрно-белая база, mom jeans, бомберы</p>
+                            <p class="store-price">💰 200–550k ₫ • Унисекс</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Location 2: Brunch -->
+            <div class="location-card">
+                <img src="https://adventurefaktory.com/wp-content/uploads/2015/01/2014-LusineDK-1-1024x678.jpg" alt="L'Usine Cafe Saigon" class="location-photo">
+                <div class="location-header">
+                    <div class="location-number">🍳</div>
+                    <div class="location-title">
+                        <h3>Бранч: L'Usine</h3>
+                        <div class="location-badges">
+                            <span class="location-badge">☕ Кафе</span>
+                            <span class="location-badge">🇫🇷 Французский стиль</span>
+                            <span class="location-badge">📸 Инстаграм</span>
+                        </div>
+                        <div class="location-links">
+                            <a href="https://www.instagram.com/lusinespace/" target="_blank" class="location-link instagram"><i class="fab fa-instagram"></i> Instagram</a>
+                            <a href="https://maps.app.goo.gl/Yk8qK8qKqnz8QWRV6" target="_blank" class="location-link maps"><i class="fas fa-map-marker-alt"></i> Google Maps</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="location-body">
+                    <p class="location-desc">
+                        Культовое кафе Сайгона в стиле французского ретро. Три локации в центре! Внутри ещё бутик и галерея. Идеально для бранча после утреннего шоппинга.
+                    </p>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-item-label">📍 Ближайшая локация</div>
+                            <div class="info-item-value">70B Lê Lợi, District 1</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">🚶 От 26 LTT</div>
+                            <div class="info-item-value">5 минут пешком</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">💰 Средний чек</div>
+                            <div class="info-item-value">150,000 – 250,000 ₫</div>
+                        </div>
+                    </div>
+
+                    <div class="food-recommendation">
+                        <h4>🍽️ Что заказать</h4>
+                        <div class="food-item">
+                            <span class="food-name">Eggs Benedict</span>
+                            <span class="food-price">~150k ₫</span>
+                        </div>
+                        <div class="food-item">
+                            <span class="food-name">Avocado Toast</span>
+                            <span class="food-price">~120k ₫</span>
+                        </div>
+                        <div class="food-item">
+                            <span class="food-name">French Croissant + Latte</span>
+                            <span class="food-price">~90k ₫</span>
+                        </div>
+                        <div class="food-item">
+                            <span class="food-name">Vietnamese Iced Coffee</span>
+                            <span class="food-price">~55k ₫</span>
+                        </div>
+                    </div>
+
+                    <div class="tip-box green">
+                        <span class="tip-icon">💡</span>
+                        <div class="tip-content">
+                            <h5>Альтернатива: The Workshop</h5>
+                            <p>Если хочешь specialty coffee в лофт-пространстве — The Workshop на 2 этаже рядом с 26 LTT. Отличный кофе, но еда скромнее.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Location 3: MUJI + Vincom -->
+            <div class="location-card">
+                <img src="https://thesmartlocal.com/vietnam/wp-content/uploads/2021/02/TSL-MUJI-HCMC-56-scaled.jpg" alt="MUJI store Saigon Parkson" class="location-photo">
+                <div class="location-header">
+                    <div class="location-number">2</div>
+                    <div class="location-title">
+                        <h3>MUJI + Vincom Center</h3>
+                        <div class="location-badges">
+                            <span class="location-badge">☁️ Японский минимализм</span>
+                            <span class="location-badge">🏢 Масс-маркет</span>
+                        </div>
+                        <div class="location-links">
+                            <a href="https://www.instagram.com/muji_vn/" target="_blank" class="location-link instagram"><i class="fab fa-instagram"></i> Instagram</a>
+                            <a href="https://maps.app.goo.gl/Yk8Lr1jJYgRm9tVZ8" target="_blank" class="location-link maps"><i class="fas fa-map-marker-alt"></i> Google Maps</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="location-body">
+                    <p class="location-desc">
+                        <strong>MUJI</strong> — крупнейший в Юго-Восточной Азии (2,000 м²)! Тёплое освещение, деревянная отделка. Внутри есть кафе. <strong>Vincom</strong> — если нужны размеры до XL и международные бренды.
+                    </p>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-item-label">📍 MUJI</div>
+                            <div class="info-item-value">35Bis-45 Lê Thánh Tôn (Parkson)</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">📍 Vincom</div>
+                            <div class="info-item-value">65 Lê Lợi, District 1</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">🕐 Время</div>
+                            <div class="info-item-value">10:00 – 22:00</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">⏱️ Сколько времени</div>
+                            <div class="info-item-value">30-45 минут</div>
+                        </div>
+                    </div>
+
+                    <div class="directions-box">
+                        <h4>🚶 Как дойти от L'Usine</h4>
+                        <div class="directions-steps">
+                            <div class="direction-step">
+                                <span class="direction-icon">↓</span>
+                                <span>Выйди на Lê Lợi</span>
+                            </div>
+                            <div class="direction-step">
+                                <span class="direction-icon">→</span>
+                                <span>Vincom — через дорогу (1 мин)</span>
+                            </div>
+                            <div class="direction-step">
+                                <span class="direction-icon">→</span>
+                                <span>MUJI — 5 минут пешком по Lê Thánh Tôn</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stores-section">
+                        <h4>🛒 Что купить в MUJI</h4>
+                        <div class="store-card">
+                            <p class="store-desc">✅ Водонепроницаемые куртки, базовые футболки, льняные рубашки</p>
+                            <p class="store-desc">✅ Канцелярия — ручки от 19,000 ₫, блокноты, пеналы</p>
+                            <p class="store-desc">✅ Уходовая косметика, масла</p>
+                            <p class="store-desc">✅ Японские снеки, карри, чай</p>
+                        </div>
+                    </div>
+
+                    <div class="tip-box">
+                        <span class="tip-icon">👗</span>
+                        <div class="tip-content">
+                            <h5>Про размеры</h5>
+                            <p>В локальных вьетнамских бутиках размеры XS-M. Если нужен L-XL — иди в <strong>Vincom</strong> (Zara, H&M, Mango, Nike, Adidas).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Location 4: 42 Ton That Thiep -->
+            <div class="location-card">
+                <img src="https://thefroggyadventures.com/wp-content/uploads/2024/10/Shopping-at-Chung-Cu-42-Ton-That-Thiep.jpg" alt="42 Ton That Thiep Thrift Mall Saigon" class="location-photo">
+                <div class="location-header">
+                    <div class="location-number">3</div>
+                    <div class="location-title">
+                        <h3>Chung cư 42 Tôn Thất Thiệp</h3>
+                        <div class="location-badges">
+                            <span class="location-badge">🎀 Секретный хаб</span>
+                            <span class="location-badge">👗 Y2K / Coquette</span>
+                            <span class="location-badge">🛍️ Thrift Mall</span>
+                        </div>
+                        <div class="location-links">
+                            <a href="https://maps.app.goo.gl/4xAqNJ2TqE9fAqHx5" target="_blank" class="location-link maps"><i class="fas fa-map-marker-alt"></i> Google Maps</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="location-body">
+                    <p class="location-desc">
+                        Обветшалое 3-этажное здание <strong>напротив люксового Saigon Centre</strong> — визуальный контраст! Внутри ~10 магазинов на каждом этаже с кондиционерами. Здесь прячется <strong>Thrift Mall</strong> — 6+ секонд-хендов в одном месте!
+                    </p>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-item-label">📍 Адрес</div>
+                            <div class="info-item-value">42 Tôn Thất Thiệp, Bến Nghé, Quận 1</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">🕐 Время работы</div>
+                            <div class="info-item-value">8:30 – 21:00</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">⏱️ Сколько времени</div>
+                            <div class="info-item-value">1–1.5 часа</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">🚶 От MUJI</div>
+                            <div class="info-item-value">5 минут пешком</div>
+                        </div>
+                    </div>
+
+                    <div class="directions-box">
+                        <h4>🚶 Как дойти от MUJI</h4>
+                        <div class="directions-steps">
+                            <div class="direction-step">
+                                <span class="direction-icon">📍</span>
+                                <span>Выйди из Parkson на Lê Thánh Tôn</span>
+                            </div>
+                            <div class="direction-step">
+                                <span class="direction-icon">→</span>
+                                <span>Поверни НАПРАВО, иди ~50м</span>
+                            </div>
+                            <div class="direction-step">
+                                <span class="direction-icon">←</span>
+                                <span>Поверни НАЛЕВО на Tôn Thất Thiệp</span>
+                            </div>
+                            <div class="direction-step">
+                                <span class="direction-icon">📍</span>
+                                <span>Иди ~100м — здание будет СПРАВА (напротив Saigon Centre)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tip-box">
+                        <span class="tip-icon">🔍</span>
+                        <div class="tip-content">
+                            <h5>Как найти вход</h5>
+                            <p>Ищи старое обшарпанное здание с решётками — контраст с блестящим Saigon Centre напротив. <strong>Главный вход</strong> — прямо с улицы, поднимайся по открытой лестнице.</p>
+                        </div>
+                    </div>
+
+                    <div class="tip-box blue">
+                        <span class="tip-icon">🚪</span>
+                        <div class="tip-content">
+                            <h5>СЕКРЕТНЫЙ ВХОД в Thrift Mall!</h5>
+                            <p>
+                                1. Найди <strong>узкий проход сбоку</strong> от здания<br>
+                                2. Пройди через <strong>парковку мотоциклов</strong><br>
+                                3. Увидишь <strong>заднюю лестницу</strong><br>
+                                4. Поднимись на <strong>2 ЭТАЖ</strong><br>
+                                5. Thrift Mall прямо перед тобой!<br><br>
+                                💡 Подсказка: Если видишь много припаркованных мотоциклов у стены — вход рядом!
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="stores-section">
+                        <h4>🏪 Магазины</h4>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">She by Shj</span>
+                                <span class="store-style">Y2K / Тренды</span>
+                            </div>
+                            <p class="store-desc">Яркие цвета, ленты, кружево. Влажноотводящие ткани, японский хлопок</p>
+                            <p class="store-price">💰 250–400k ₫ • 📍 1 этаж</p>
+                        </div>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">Bloomode</span>
+                                <span class="store-style">Streetwear</span>
+                            </div>
+                            <p class="store-desc">«In Street We Trust» — чёрно-белая база, mom jeans, бомберы, тоут-бэги</p>
+                            <p class="store-price">💰 200–550k ₫ • 📍 2 этаж (Room 38)</p>
+                        </div>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">Mamavirus</span>
+                                <span class="store-style">Coquette</span>
+                            </div>
+                            <p class="store-desc">Женственная американа</p>
+                            <p class="store-price">💰 300–600k ₫ • 📍 1 этаж</p>
+                        </div>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">AAH Midnight Club</span>
+                                <span class="store-style">Americana</span>
+                            </div>
+                            <p class="store-desc">Винтажный американский стиль</p>
+                            <p class="store-price">💰 400–800k ₫</p>
+                        </div>
+                    </div>
+
+                    <div class="stores-section">
+                        <h4>🛍️ Thrift Mall (2 этаж, задняя лестница)</h4>
+                        <p style="margin-bottom: 15px; color: var(--text-light);">6+ секонд-хендов в одном месте!</p>
+
+                        <div class="store-card">
+                            <p class="store-desc">✅ <strong>Y2K возвращение:</strong> Von Dutch, Ed Hardy</p>
+                            <p class="store-desc">✅ <strong>Винтаж:</strong> Редкие находки 90-х</p>
+                            <p class="store-desc">✅ <strong>Люкс б/у:</strong> Vivienne Westwood, Chanel, Dior (аксессуары)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Location 5: Cafe Apartment -->
+            <div class="location-card">
+                <img src="https://cms.vietnamcoracle.com/wp-content/uploads/2024/10/42-Nguyen-Hue-Finished-2755-title-final.jpg" alt="Cafe Apartment 42 Nguyen Hue Saigon" class="location-photo">
+                <div class="location-header">
+                    <div class="location-number">4</div>
+                    <div class="location-title">
+                        <h3>Cafe Apartment (42 Nguyễn Huệ)</h3>
+                        <div class="location-badges">
+                            <span class="location-badge">📸 Культовое место</span>
+                            <span class="location-badge">☕ 50+ кафе</span>
+                            <span class="location-badge">🏛️ Здание 60-х</span>
+                        </div>
+                        <div class="location-links">
+                            <a href="https://maps.app.goo.gl/vNgP4eQE3nYVqF1t5" target="_blank" class="location-link maps"><i class="fas fa-map-marker-alt"></i> Google Maps</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="location-body">
+                    <p class="location-desc">
+                        9-этажное здание 1960-х годов — бывший жилой дом, теперь <strong>50+ независимых кафе, бутиков и креативных пространств</strong>. Одно из самых инстаграмных мест Сайгона! Балконы с видом на пешеходную улицу Nguyễn Huệ.
+                    </p>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-item-label">📍 Адрес</div>
+                            <div class="info-item-value">42 Nguyễn Huệ, Bến Nghé, District 1</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">🕐 Время работы</div>
+                            <div class="info-item-value">8:00 – 22:00 (кафе по-разному)</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">💰 Вход в здание</div>
+                            <div class="info-item-value">~10,000 ₫ (лифт) или бесплатно (лестница)</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">⏱️ Сколько времени</div>
+                            <div class="info-item-value">30-45 минут</div>
+                        </div>
+                    </div>
+
+                    <div class="directions-box">
+                        <h4>🚶 Как дойти от 42 Tôn Thất Thiệp</h4>
+                        <div class="directions-steps">
+                            <div class="direction-step">
+                                <span class="direction-icon">→</span>
+                                <span>Выйди на Tôn Thất Thiệp, поверни НАПРАВО</span>
+                            </div>
+                            <div class="direction-step">
+                                <span class="direction-icon">↓</span>
+                                <span>Иди до пересечения с Nguyễn Huệ (~200м)</span>
+                            </div>
+                            <div class="direction-step">
+                                <span class="direction-icon">←</span>
+                                <span>Поверни НАЛЕВО на пешеходную улицу</span>
+                            </div>
+                            <div class="direction-step">
+                                <span class="direction-icon">📍</span>
+                                <span>Здание будет СЛЕВА — ищи номер 42</span>
+                            </div>
+                        </div>
+                        <p style="margin-top: 10px; font-size: 0.85rem; color: var(--text-light);">⏱️ 7-10 минут пешком</p>
+                    </div>
+
+                    <div class="stores-section">
+                        <h4>☕ Лучшие кафе в здании</h4>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">Saigon Oi</span>
+                                <span class="store-style">Балкон с видом</span>
+                            </div>
+                            <p class="store-desc">Лучший вид на пешеходную улицу! Вьетнамский кофе, коктейли</p>
+                            <p class="store-price">💰 50–90k ₫</p>
+                        </div>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">The Letter</span>
+                                <span class="store-style">Уютный</span>
+                            </div>
+                            <p class="store-desc">Винтажный декор, отличный кофе</p>
+                            <p class="store-price">💰 45–80k ₫</p>
+                        </div>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">Partea</span>
+                                <span class="store-style">Чайный</span>
+                            </div>
+                            <p class="store-desc">Английская чайная комната, скоунсы</p>
+                            <p class="store-price">💰 60–120k ₫</p>
+                        </div>
+                    </div>
+
+                    <div class="photo-spots">
+                        <span class="photo-spot">📸 Балконы с видом</span>
+                        <span class="photo-spot">📸 Винтажный лифт</span>
+                        <span class="photo-spot">📸 Лестничные пролёты</span>
+                        <span class="photo-spot">📸 Фасад здания снизу</span>
+                    </div>
+
+                    <div class="tip-box">
+                        <span class="tip-icon">💡</span>
+                        <div class="tip-content">
+                            <h5>Лайфхак</h5>
+                            <p>Если не хочешь платить за лифт — поднимайся по лестнице! Заодно увидишь все кафе и сделаешь фото на каждом этаже.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Location 6: Tran Quang Dieu -->
+            <div class="location-card">
+                <img src="https://gcs.tripi.vn/public-tripi/tripi-feed/img/474198BCh/happy-zoo-store-1017382.jpg" alt="Happy Zoo Store Tran Quang Dieu K-style" class="location-photo">
+                <div class="location-header">
+                    <div class="location-number">5</div>
+                    <div class="location-title">
+                        <h3>Trần Quang Diệu Street</h3>
+                        <div class="location-badges">
+                            <span class="location-badge">🇰🇷 K-style</span>
+                            <span class="location-badge">💰 Дешевле</span>
+                            <span class="location-badge">👗 Корейская мода</span>
+                        </div>
+                        <div class="location-links">
+                            <a href="https://maps.app.goo.gl/1kRQ7wQyqJhVqMbG9" target="_blank" class="location-link maps"><i class="fas fa-map-marker-alt"></i> Google Maps</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="location-body">
+                    <p class="location-desc">
+                        Улица с концентрацией магазинов <strong>корейского стиля</strong>. Менее туристическое место — можно спокойно мерить, цены ниже чем в District 1. 60% товаров — импорт из Кореи + своё производство.
+                    </p>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-item-label">📍 Адрес</div>
+                            <div class="info-item-value">ул. Trần Quang Diệu, Phường 14, Quận 3</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">🕐 Время работы</div>
+                            <div class="info-item-value">9:00 – 22:00</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">⏱️ Сколько времени</div>
+                            <div class="info-item-value">1–1.5 часа</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">💰 Цены</div>
+                            <div class="info-item-value">150,000 – 400,000 ₫</div>
+                        </div>
+                    </div>
+
+                    <div class="directions-box">
+                        <h4>🚕 Как добраться от Cafe Apartment</h4>
+                        <div class="directions-steps">
+                            <div class="direction-step">
+                                <span class="direction-icon">📱</span>
+                                <span>Открой <strong>Grab</strong> → Введи "25 Tran Quang Dieu District 3" или "Nhà Kho Liti"</span>
+                            </div>
+                            <div class="direction-step">
+                                <span class="direction-icon">💰</span>
+                                <span>~30,000 ₫ (Bike) / ~50,000 ₫ (Car)</span>
+                            </div>
+                            <div class="direction-step">
+                                <span class="direction-icon">⏱️</span>
+                                <span>10–15 минут</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tip-box blue">
+                        <span class="tip-icon">🗺️</span>
+                        <div class="tip-content">
+                            <h5>Порядок обхода улицы</h5>
+                            <p>
+                                📍 Начни с дома <strong>№25</strong> (Nhà Kho Liti)<br>
+                                ↓ Иди по ПРАВОЙ стороне улицы<br>
+                                ↓ Дом №34 — Ruchan<br>
+                                ↓ Дом №77 — Lep', Happy Zoo<br>
+                                ↓ Дом №100 — Miều Fashionista<br>
+                                📍 Можешь вернуться по ЛЕВОЙ стороне
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="stores-section">
+                        <h4>🏪 Топ магазины</h4>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">Nhà Kho Liti</span>
+                                <span class="store-style">K-style</span>
+                            </div>
+                            <p class="store-desc">60% импорт из Кореи + своё производство. Быстро обновляют тренды!</p>
+                            <p class="store-price">📍 25 Tran Quang Dieu, 2 этаж • Вход через узкую лестницу сбоку</p>
+                        </div>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">Lep'</span>
+                                <span class="store-style">Нежный K-style</span>
+                            </div>
+                            <p class="store-desc">Мягкие ткани, платья по фигуре. Есть диваны для отдыха!</p>
+                            <p class="store-price">📍 77 Tran Quang Dieu</p>
+                        </div>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">Happy Zoo Store</span>
+                                <span class="store-style">Трендовый</span>
+                            </div>
+                            <p class="store-desc">Раскупается за 1-2 дня! 3 филиала в городе</p>
+                            <p class="store-price">📍 77 Tran Quang Dieu (рядом с Lep')</p>
+                        </div>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">Miều Fashionista</span>
+                                <span class="store-style">Разнообразный</span>
+                            </div>
+                            <p class="store-desc">От нежного до дерзкого. Отличный сервис!</p>
+                            <p class="store-price">💰 150–200k ₫ • 📍 100 Tran Quang Dieu</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Location 7: Oasis Cafe -->
+            <div class="location-card">
+                <img src="https://vcdn1-dulich.vnecdn.net/2024/12/02/DSCF0749-1733139038.jpg" alt="Oasis Cafe кои-рыбки Сайгон" class="location-photo">
+                <div class="location-header">
+                    <div class="location-number">🐟</div>
+                    <div class="location-title">
+                        <h3>Oasis Cafe</h3>
+                        <div class="location-badges">
+                            <span class="location-badge">🐟 Кои-кафе</span>
+                            <span class="location-badge">🌿 Природа</span>
+                            <span class="location-badge">📸 Уникальное</span>
+                        </div>
+                        <div class="location-links">
+                            <a href="https://www.instagram.com/oasiscafevn/" target="_blank" class="location-link instagram"><i class="fab fa-instagram"></i> Instagram</a>
+                            <a href="https://maps.app.goo.gl/k6CJGtR8BbwzKgHp9" target="_blank" class="location-link maps"><i class="fas fa-map-marker-alt"></i> Google Maps</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="location-body">
+                    <p class="location-desc">
+                        <strong>Первое кои-кафе Сайгона с 2010 года!</strong> Столики стоят прямо в воде — сотни кои плавают вокруг тебя пока ты пьёшь кофе. Можно покормить рыбок! Много растений, расслабленная атмосфера.
+                    </p>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-item-label">📍 Адрес</div>
+                            <div class="info-item-value">176/1B Lê Văn Sỹ, Phú Nhuận</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">🕐 Время работы</div>
+                            <div class="info-item-value">7:00 – 23:00</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">💰 Средний чек</div>
+                            <div class="info-item-value">60,000 – 80,000 ₫</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">⏱️ Сколько времени</div>
+                            <div class="info-item-value">45-60 минут</div>
+                        </div>
+                    </div>
+
+                    <div class="directions-box">
+                        <h4>🚕 Как добраться от Trần Quang Diệu</h4>
+                        <div class="directions-steps">
+                            <div class="direction-step">
+                                <span class="direction-icon">📱</span>
+                                <span>Открой <strong>Grab</strong> → Введи "Oasis Cafe Le Van Sy"</span>
+                            </div>
+                            <div class="direction-step">
+                                <span class="direction-icon">💰</span>
+                                <span>~20,000 ₫ (Bike) / ~35,000 ₫ (Car)</span>
+                            </div>
+                            <div class="direction-step">
+                                <span class="direction-icon">⏱️</span>
+                                <span>10 минут</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="food-recommendation">
+                        <h4>🍽️ Что заказать</h4>
+                        <div class="food-item">
+                            <span class="food-name">Cà phê sữa đá (вьетнамский кофе со льдом)</span>
+                            <span class="food-price">~45k ₫</span>
+                        </div>
+                        <div class="food-item">
+                            <span class="food-name">Coconut coffee</span>
+                            <span class="food-price">~55k ₫</span>
+                        </div>
+                        <div class="food-item">
+                            <span class="food-name">Fresh fruit smoothie</span>
+                            <span class="food-price">~50k ₫</span>
+                        </div>
+                    </div>
+
+                    <div class="tip-box green">
+                        <span class="tip-icon">🐟</span>
+                        <div class="tip-content">
+                            <h5>Покорми рыбок!</h5>
+                            <p>Корм для кои дают бесплатно за отзыв в Google или Facebook! Спроси у официанта.</p>
+                        </div>
+                    </div>
+
+                    <div class="tip-box">
+                        <span class="tip-icon">🚌</span>
+                        <div class="tip-content">
+                            <h5>Дорога обратно в Бенче</h5>
+                            <p>От Oasis Cafe до автовокзала Miền Tây: <strong>~25 минут на Grab</strong> (~50,000 ₫). Выезжай в ~18:30-19:00 чтобы успеть на вечерний автобус.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <div class="section-divider">
+            <span>✨ 🌙 ✨</span>
+        </div>
+
+        <!-- ==================== DAY 2 ==================== -->
+        <section id="day2" class="section">
+
+            <div class="day-header" style="background: linear-gradient(135deg, #ffa94d 0%, #ff6b9d 100%);">
+                <h2>🏮 День 2</h2>
+                <p class="day-subtitle">District 5 (Чайнатаун) + District 3 (обувь) • Оптовые цены • Храм • Вьетнамская еда</p>
+            </div>
+
+            <!-- Day Overview -->
+            <div class="day-overview">
+                <h3>📋 План дня</h3>
+                <div class="overview-timeline">
+                    <div class="overview-item">
+                        <span class="overview-time">7:00</span>
+                        <span class="overview-place">🚌 Автобус из Бенче</span>
+                        <span class="overview-duration">2-2.5ч</span>
+                    </div>
+                    <div class="overview-item">
+                        <span class="overview-time">~9:30</span>
+                        <span class="overview-place">📍 Приезд в District 5 (ты уже тут!)</span>
+                        <span class="overview-duration"></span>
+                    </div>
+                    <div class="overview-item">
+                        <span class="overview-time">9:30</span>
+                        <span class="overview-place">🏯 Thiên Hậu Temple</span>
+                        <span class="overview-duration">30 мин</span>
+                    </div>
+                    <div class="overview-item">
+                        <span class="overview-time">10:00</span>
+                        <span class="overview-place">⛪ Notre-Dame Cathedral + Почта</span>
+                        <span class="overview-duration">30 мин</span>
+                    </div>
+                    <div class="overview-item">
+                        <span class="overview-time">10:30</span>
+                        <span class="overview-place">🏯 Jade Emperor Pagoda</span>
+                        <span class="overview-duration">30 мин</span>
+                    </div>
+                    <div class="overview-item">
+                        <span class="overview-time">11:00</span>
+                        <span class="overview-place">🏮 An Dong Market</span>
+                        <span class="overview-duration">1.5ч</span>
+                    </div>
+                    <div class="overview-item">
+                        <span class="overview-time">12:30</span>
+                        <span class="overview-place">🍜 Обед: Hủ tiếu в фуд-корте</span>
+                        <span class="overview-duration">30-45 мин</span>
+                    </div>
+                    <div class="overview-item">
+                        <span class="overview-time">13:15</span>
+                        <span class="overview-place">👗 Nguyễn Trãi Fashion Street</span>
+                        <span class="overview-duration">1.5-2ч</span>
+                    </div>
+                    <div class="overview-item">
+                        <span class="overview-time">15:15</span>
+                        <span class="overview-place">🚕 Grab → District 3</span>
+                        <span class="overview-duration">15 мин</span>
+                    </div>
+                    <div class="overview-item">
+                        <span class="overview-time">15:30</span>
+                        <span class="overview-place">👟 Nguyen Dinh Chieu (обувь)</span>
+                        <span class="overview-duration">1.5ч</span>
+                    </div>
+                    <div class="overview-item">
+                        <span class="overview-time">17:00</span>
+                        <span class="overview-place">🏙️ Bitexco Skydeck (закат!)</span>
+                        <span class="overview-duration">45 мин</span>
+                    </div>
+                    <div class="overview-item">
+                        <span class="overview-time">17:45</span>
+                        <span class="overview-place">🍜 Корейский ужин в D3</span>
+                        <span class="overview-duration">45 мин</span>
+                    </div>
+                    <div class="overview-item">
+                        <span class="overview-time">18:30</span>
+                        <span class="overview-place">🚌 Автовокзал → Бенче</span>
+                        <span class="overview-duration"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Historical Places -->
+            <div class="historical-card">
+                <h4>🏯 Исторические места (по пути)</h4>
+                <p style="color: var(--text-light); margin-bottom: 20px;">Можно посмотреть по дороге из автовокзала в шоппинг-зону</p>
+
+                <div class="location-card" style="margin-bottom: 15px;">
+                    <img src="https://travelsaigon.org/wp-content/uploads/thien-hau-temple-1-1.jpg" alt="Thiên Hậu Temple Cholon" class="location-photo">
+                    <div class="location-body">
+                        <h4 style="margin-bottom: 10px;">🏯 Thiên Hậu Temple</h4>
+                        <div class="location-links" style="margin-bottom: 10px;">
+                            <a href="https://maps.app.goo.gl/Qmj6XxH2nPjZvJUv5" target="_blank" class="location-link maps"><i class="fas fa-map-marker-alt"></i> Google Maps</a>
+                        </div>
+                        <p class="location-desc">Храм богини моря Мацзу в Чайнатауне. <strong>200+ лет истории!</strong> Горящие спиральные благовония, резные драконы, красные фонари. Один из старейших храмов Сайгона.</p>
+                        <div class="info-grid" style="margin-top: 15px;">
+                            <div class="info-item">
+                                <div class="info-item-label">📍 Адрес</div>
+                                <div class="info-item-value">710 Nguyễn Trãi, District 5</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-item-label">🕐 Время</div>
+                                <div class="info-item-value">6:00 – 17:30</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-item-label">💰 Вход</div>
+                                <div class="info-item-value">Бесплатно</div>
+                            </div>
+                        </div>
+                        <div class="tip-box green" style="margin-top: 15px; margin-bottom: 0;">
+                            <span class="tip-icon">📍</span>
+                            <div class="tip-content">
+                                <p><strong>5 минут от An Dong Market</strong> — идеально совместить!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="location-card" style="margin-bottom: 15px;">
+                    <img src="https://saigon.for91days.com/wp-content/uploads/sites/21/2017/02/Notred-Dame-Saigon.jpg" alt="Notre Dame Cathedral + Почта Сайгон" class="location-photo">
+                    <div class="location-body">
+                        <h4 style="margin-bottom: 10px;">⛪ Notre-Dame Cathedral + Центральная почта</h4>
+                        <div class="location-links" style="margin-bottom: 10px;">
+                            <a href="https://maps.app.goo.gl/Xc8H2zVYwPbJvCsZ9" target="_blank" class="location-link maps"><i class="fas fa-church"></i> Собор</a>
+                            <a href="https://maps.app.goo.gl/GqWn8uQHbM2vAqTv5" target="_blank" class="location-link maps"><i class="fas fa-envelope"></i> Почта</a>
+                        </div>
+                        <p class="location-desc"><strong>Колониальная архитектура!</strong> Собор из красного кирпича (1880) + Почта в стиле Гюстава Эйфеля. Красивые фото снаружи, внутрь почты можно зайти.</p>
+                        <div class="info-grid" style="margin-top: 15px;">
+                            <div class="info-item">
+                                <div class="info-item-label">📍 Адрес</div>
+                                <div class="info-item-value">1 Công xã Paris, District 1</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-item-label">💰 Вход</div>
+                                <div class="info-item-value">Бесплатно (почта открыта)</div>
+                            </div>
+                        </div>
+                        <div class="photo-spots" style="margin-top: 15px;">
+                            <span class="photo-spot">📸 Фасад собора</span>
+                            <span class="photo-spot">📸 Интерьер почты</span>
+                            <span class="photo-spot">📸 Статуя Девы Марии</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="location-card" style="margin-bottom: 0;">
+                    <img src="https://localvietnam.com/wp-content/uploads/2023/06/jade-emperor-pagoda-9.jpg" alt="Jade Emperor Pagoda храм Обама" class="location-photo">
+                    <div class="location-body">
+                        <h4 style="margin-bottom: 10px;">🏯 Jade Emperor Pagoda</h4>
+                        <div class="location-links" style="margin-bottom: 10px;">
+                            <a href="https://maps.app.goo.gl/kZ2VhK6r6eZn4Vbx5" target="_blank" class="location-link maps"><i class="fas fa-map-marker-alt"></i> Google Maps</a>
+                        </div>
+                        <p class="location-desc">Самый <strong>атмосферный храм Сайгона!</strong> 300+ статуй таоистских божеств. Розовое здание с красной отделкой — уникальное! Сюда приезжал Обама в 2016.</p>
+                        <div class="info-grid" style="margin-top: 15px;">
+                            <div class="info-item">
+                                <div class="info-item-label">📍 Адрес</div>
+                                <div class="info-item-value">73 Mai Thị Lựu, District 1</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-item-label">🕐 Время</div>
+                                <div class="info-item-value">7:00 – 17:30</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-item-label">💰 Вход</div>
+                                <div class="info-item-value">Бесплатно</div>
+                            </div>
+                        </div>
+                        <div class="tip-box" style="margin-top: 15px; margin-bottom: 0;">
+                            <span class="tip-icon">👗</span>
+                            <div class="tip-content">
+                                <p>Одежда должна закрывать плечи и колени. Приходи пораньше — меньше туристов!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Location 1: An Dong Market -->
+            <div class="location-card">
+                <img src="https://localvietnam.com/wp-content/uploads/2023/06/an-dong-market-1.jpg" alt="An Dong Market Cho An Dong District 5" class="location-photo">
+                <div class="location-header">
+                    <div class="location-number">1</div>
+                    <div class="location-title">
+                        <h3>An Dong Market</h3>
+                        <div class="location-badges">
+                            <span class="location-badge">🏮 Оптовый рынок</span>
+                            <span class="location-badge">📐 25,000 м²</span>
+                            <span class="location-badge">🏛️ С 1951</span>
+                        </div>
+                        <div class="location-links">
+                            <a href="https://maps.app.goo.gl/8x8Z6VxQfGN2dqDZ8" target="_blank" class="location-link maps"><i class="fas fa-map-marker-alt"></i> Google Maps</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="location-body">
+                    <p class="location-desc">
+                        <strong>Крупнейший оптовый рынок моды в Сайгоне с 1951 года!</strong> 4 этажа, архитектура в стиле Гонконга 80-90х — бетонный фасад с 306 ячейками. Ткани, одежда, обувь, ювелирка, снеки. Торг обязателен!
+                    </p>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-item-label">📍 Адрес</div>
+                            <div class="info-item-value">34-36 An Dương Vương, Ward 9, District 5</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">🕐 Время работы</div>
+                            <div class="info-item-value">7:00 – 18:00</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">⏱️ Сколько времени</div>
+                            <div class="info-item-value">1-2 часа</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">💵 Оплата</div>
+                            <div class="info-item-value">Только наличные!</div>
+                        </div>
+                    </div>
+
+                    <div class="directions-box">
+                        <h4>🚕 Как добраться от автовокзала</h4>
+                        <div class="directions-steps">
+                            <div class="direction-step">
+                                <span class="direction-icon">📱</span>
+                                <span>Grab → "An Dong Market" или "Chợ An Đông"</span>
+                            </div>
+                            <div class="direction-step">
+                                <span class="direction-icon">💰</span>
+                                <span>~20,000-30,000 ₫ (близко!)</span>
+                            </div>
+                            <div class="direction-step">
+                                <span class="direction-icon">🗣️</span>
+                                <span>Скажи таксисту: "Чо Ан Донг"</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stores-section">
+                        <h4>🗺️ Карта этажей</h4>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">Подвал</span>
+                            </div>
+                            <p class="store-desc">💎 Ювелирка (золото, серебро) — левое крыло<br>🍪 Сухофрукты, орехи, снеки — центр<br>🍜 <strong>ФУД-КОРТ</strong> — правое крыло (ищи пластиковые столики)</p>
+                        </div>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">1 этаж</span>
+                            </div>
+                            <p class="store-desc">🧵 Ткани для Ао Зай (можно пошить на месте!)<br>👗 Готовая одежда — по периметру</p>
+                        </div>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">2-3 этаж</span>
+                            </div>
+                            <p class="store-desc">👠 Обувь, сумки<br>👕 Одежда оптом<br>🎁 Сувениры, лаковые изделия</p>
+                        </div>
+                    </div>
+
+                    <div class="tip-box">
+                        <span class="tip-icon">🏷️</span>
+                        <div class="tip-content">
+                            <h5>Торг обязателен!</h5>
+                            <p>Начинай с <strong>60% от цены</strong>. Сбивай на 30-50%! Это оптовый рынок — некоторые продают от 10 шт., но многие продают и в розницу. Просто спроси! Английский ограничен — используй жесты и калькулятор.</p>
+                        </div>
+                    </div>
+
+                    <div class="tip-box blue">
+                        <span class="tip-icon">🛍️</span>
+                        <div class="tip-content">
+                            <h5>Что купить</h5>
+                            <p>✅ Кокосовое печенье, семена лотоса, кешью (подвал)<br>✅ Шёлк для Ао Зай (1 этаж)<br>✅ Оптовые цены на базовую одежду (2-3 этаж)<br>✅ Лаковые изделия в подарок (3 этаж)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Location 2: Lunch -->
+            <div class="location-card">
+                <img src="https://vietnamnomad.com/wp-content/uploads/2022/09/Hu-Tieu-A-Guide-to-the-Southern-Vietnamese-Noodle-Soup-Vietnamnomad.jpg" alt="Hu Tieu вьетнамский суп с лапшой" class="location-photo">
+                <div class="location-header">
+                    <div class="location-number">🍜</div>
+                    <div class="location-title">
+                        <h3>Обед: Фуд-корт An Dong</h3>
+                        <div class="location-badges">
+                            <span class="location-badge">🇻🇳 Вьетнамская еда</span>
+                            <span class="location-badge">💰 Дёшево</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="location-body">
+                    <p class="location-desc">
+                        Фуд-корт в <strong>подвале An Dong Market</strong> — аутентичная вьетнамская еда по локальным ценам! Ищи пластиковые столики в правом крыле.
+                    </p>
+
+                    <div class="food-recommendation">
+                        <h4>🍽️ Что заказать</h4>
+                        <div class="food-item">
+                            <span class="food-name">Hủ tiếu (рисовая лапша — визитка района!)</span>
+                            <span class="food-price">~35k ₫</span>
+                        </div>
+                        <div class="food-item">
+                            <span class="food-name">Bánh mì Sài Gòn (сайгонский багет)</span>
+                            <span class="food-price">~25k ₫</span>
+                        </div>
+                        <div class="food-item">
+                            <span class="food-name">Bún mọc (суп с фрикадельками)</span>
+                            <span class="food-price">~40k ₫</span>
+                        </div>
+                        <div class="food-item">
+                            <span class="food-name">Chè (сладкий десертный суп)</span>
+                            <span class="food-price">~20k ₫</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Location 3: Nguyen Trai Street -->
+            <div class="location-card">
+                <img src="https://www.mazevietnam.com/wp-content/uploads/2016/10/Nguyễn-trãi-1.jpg" alt="Nguyen Trai Fashion Street District 5" class="location-photo">
+                <div class="location-header">
+                    <div class="location-number">2</div>
+                    <div class="location-title">
+                        <h3>Nguyễn Trãi Fashion Street</h3>
+                        <div class="location-badges">
+                            <span class="location-badge">👗 2 км моды</span>
+                            <span class="location-badge">🏪 200+ магазинов</span>
+                            <span class="location-badge">🌙 Барахолка вечером</span>
+                        </div>
+                        <div class="location-links">
+                            <a href="https://maps.app.goo.gl/6SiuVE6qxz5VpLqz9" target="_blank" class="location-link maps"><i class="fas fa-map-marker-alt"></i> Google Maps</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="location-body">
+                    <p class="location-desc">
+                        <strong>2 километра моды!</strong> 200+ магазинов одежды, обуви, сумок, аксессуаров. Товары из Вьетнама, Китая, Тайваня, Японии. <strong>Чем дальше от District 1, тем дешевле!</strong>
+                    </p>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-item-label">📍 Участок</div>
+                            <div class="info-item-value">от Nguyễn Văn Cừ до Trần Phú</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">🕐 Время работы</div>
+                            <div class="info-item-value">8:00 – 22:00</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">⏱️ Сколько времени</div>
+                            <div class="info-item-value">1.5-2 часа</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">💰 Цены</div>
+                            <div class="info-item-value">от $2-5, торг!</div>
+                        </div>
+                    </div>
+
+                    <div class="directions-box">
+                        <h4>🚶 Как дойти от An Dong Market</h4>
+                        <div class="directions-steps">
+                            <div class="direction-step">
+                                <span class="direction-icon">📍</span>
+                                <span>Выйди из An Dong на An Dương Vương</span>
+                            </div>
+                            <div class="direction-step">
+                                <span class="direction-icon">←</span>
+                                <span>Поверни НАЛЕВО</span>
+                            </div>
+                            <div class="direction-step">
+                                <span class="direction-icon">↓</span>
+                                <span>Иди ~200м до перекрёстка с Nguyễn Trãi</span>
+                            </div>
+                            <div class="direction-step">
+                                <span class="direction-icon">→</span>
+                                <span>Поверни НАПРАВО — магазины по обеим сторонам</span>
+                            </div>
+                        </div>
+                        <p style="margin-top: 10px; font-size: 0.85rem; color: var(--text-light);">⏱️ 5-7 минут пешком</p>
+                    </div>
+
+                    <div class="tip-box blue">
+                        <span class="tip-icon">🗺️</span>
+                        <div class="tip-content">
+                            <h5>Порядок обхода</h5>
+                            <p>
+                                🚩 <strong>НАЧАЛО</strong> (ближе к D1): Круговое движение с KIDO рядом<br>
+                                ↓ Первые 500м: Дизайнерские бутики, Libé — дороже<br>
+                                ↓ 500м–1км: KIDO, Yame — средние цены<br>
+                                ↓ 1км–2км: J-P Fashion, Toto Shop — <strong>ДЕШЕВЛЕ!</strong><br>
+                                🚩 <strong>КОНЕЦ</strong>: Пересечение с Trần Phú
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="stores-section">
+                        <h4>🏪 Магазины</h4>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">J-P Fashion</span>
+                                <span class="store-style">Женственный</span>
+                            </div>
+                            <p class="store-desc">«Awaken Your Style» — качество + низкие цены + профессиональные консультанты</p>
+                        </div>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">Yame Shop</span>
+                                <span class="store-style">Streetwear</span>
+                            </div>
+                            <p class="store-desc">16 магазинов в городе! Куртки, обувь, рюкзаки. Эксклюзивные модели</p>
+                        </div>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">KIDO Flagship</span>
+                                <span class="store-style">Базовый</span>
+                            </div>
+                            <p class="store-desc">Похож на Pull&Bear. Ориентир для начала прогулки!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Location 4: Nguyen Dinh Chieu (shoes) -->
+            <div class="location-card">
+                <img src="https://e9h6jba7255.exactdn.com/wp-content/uploads/2019/10/Ho-Chi-Minh-City-Shoe-Street-510x305.jpg?strip=all&lossy=0&ssl=1" alt="Nguyen Dinh Chieu обувная улица Сайгон" class="location-photo">
+                <div class="location-header">
+                    <div class="location-number">3</div>
+                    <div class="location-title">
+                        <h3>Nguyen Dinh Chieu Street</h3>
+                        <div class="location-badges">
+                            <span class="location-badge">👟 Обувной рай</span>
+                            <span class="location-badge">💰 Отличные цены</span>
+                            <span class="location-badge">✨ Качество</span>
+                        </div>
+                        <div class="location-links">
+                            <a href="https://maps.app.goo.gl/u3Rz7d8TkN8qjWNx5" target="_blank" class="location-link maps"><i class="fas fa-map-marker-alt"></i> Google Maps</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="location-body">
+                    <p class="location-desc">
+                        <strong>Главная обувная улица Сайгона!</strong> Сотни магазинов подряд — от локальных брендов до стильных бутиков. Качество отличное — большинство обуви сделано во Вьетнаме для внутреннего рынка или экспорта.
+                    </p>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-item-label">📍 Ориентир</div>
+                            <div class="info-item-value">Возле Ban Co Market (664 Nguyen Dinh Chieu)</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">🕐 Время работы</div>
+                            <div class="info-item-value">8:30 – 22:00</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">⏱️ Сколько времени</div>
+                            <div class="info-item-value">1-1.5 часа</div>
+                        </div>
+                    </div>
+
+                    <div class="directions-box">
+                        <h4>🚕 Как добраться от Nguyễn Trãi</h4>
+                        <div class="directions-steps">
+                            <div class="direction-step">
+                                <span class="direction-icon">📱</span>
+                                <span>Grab → "Ban Co Market" или "664 Nguyen Dinh Chieu"</span>
+                            </div>
+                            <div class="direction-step">
+                                <span class="direction-icon">💰</span>
+                                <span>~25,000 ₫ (Bike) / ~40,000 ₫ (Car)</span>
+                            </div>
+                            <div class="direction-step">
+                                <span class="direction-icon">⏱️</span>
+                                <span>10-15 минут</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stores-section">
+                        <h4>💰 Цены на обувь</h4>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">Каблуки, шпильки</span>
+                                <span class="store-style">👩 Офис, вечер</span>
+                            </div>
+                            <p class="store-price">💰 $15–34 (380k–850k ₫)</p>
+                        </div>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">Балетки</span>
+                                <span class="store-style">👩 Повседневные</span>
+                            </div>
+                            <p class="store-price">💰 $10–20 (250k–500k ₫)</p>
+                        </div>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">Кроссовки</span>
+                                <span class="store-style">👫 Спорт, casual</span>
+                            </div>
+                            <p class="store-price">💰 $15–40 (380k–1M ₫)</p>
+                        </div>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">Сандалии, шлёпанцы</span>
+                                <span class="store-style">👫 Все</span>
+                            </div>
+                            <p class="store-price">💰 $8–15 (200k–380k ₫)</p>
+                        </div>
+                    </div>
+
+                    <div class="stores-section">
+                        <h4>🏪 Популярные магазины</h4>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">Juno</span>
+                            </div>
+                            <p class="store-desc">Каблуки, сандалии. Еженедельные обновления! Размеры 34–39</p>
+                        </div>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">Biti's</span>
+                            </div>
+                            <p class="store-desc">Культовый вьетнамский бренд с 1982. Размеры 35–44</p>
+                        </div>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">Hong Thanh (644 NDC)</span>
+                            </div>
+                            <p class="store-desc">15+ лет опыта. Классика + кэжуал. Размеры 35–43</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Location 5: Bitexco -->
+            <div class="location-card">
+                <img src="https://lesrivesexperience.com/wp-content/uploads/2017/09/Saigon_from_above.jpg" alt="Bitexco Skydeck вид на Сайгон" class="location-photo">
+                <div class="location-header">
+                    <div class="location-number">🏙️</div>
+                    <div class="location-title">
+                        <h3>Bitexco Saigon Skydeck</h3>
+                        <div class="location-badges">
+                            <span class="location-badge">🌅 Закат!</span>
+                            <span class="location-badge">📸 360° панорама</span>
+                            <span class="location-badge">🏙️ 49 этаж</span>
+                        </div>
+                        <div class="location-links">
+                            <a href="https://maps.app.goo.gl/8YLLQ7sLnPjC6ZQV7" target="_blank" class="location-link maps"><i class="fas fa-map-marker-alt"></i> Google Maps</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="location-body">
+                    <p class="location-desc">
+                        <strong>178 метров, 49 этаж!</strong> 360° панорама Сайгона. Лифт — самый быстрый в Юго-Восточной Азии. Идеально приходить <strong>за час до заката</strong> — увидишь и дневной город, и ночные огни!
+                    </p>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-item-label">📍 Адрес</div>
+                            <div class="info-item-value">36 Hồ Tùng Mậu, District 1</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">🕐 Время работы</div>
+                            <div class="info-item-value">9:30 – 21:30</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">💰 Билет</div>
+                            <div class="info-item-value">200k ₫ взрослый / 130k ₫ дети</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-item-label">⏱️ Сколько времени</div>
+                            <div class="info-item-value">30-45 минут</div>
+                        </div>
+                    </div>
+
+                    <div class="directions-box">
+                        <h4>🚕 Как добраться от Nguyen Dinh Chieu</h4>
+                        <div class="directions-steps">
+                            <div class="direction-step">
+                                <span class="direction-icon">📱</span>
+                                <span>Grab → "Bitexco Tower" или "36 Ho Tung Mau"</span>
+                            </div>
+                            <div class="direction-step">
+                                <span class="direction-icon">💰</span>
+                                <span>~30,000 ₫ (Bike) / ~50,000 ₫ (Car)</span>
+                            </div>
+                            <div class="direction-step">
+                                <span class="direction-icon">⏱️</span>
+                                <span>10-15 минут</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tip-box green">
+                        <span class="tip-icon">🌅</span>
+                        <div class="tip-content">
+                            <h5>Лучшее время</h5>
+                            <p>Приходи <strong>за 1 час до заката</strong> (~17:00-17:30). Увидишь город днём, закат и ночные огни! Закат в феврале-марте около 18:00-18:15.</p>
+                        </div>
+                    </div>
+
+                    <div class="tip-box">
+                        <span class="tip-icon">🍸</span>
+                        <div class="tip-content">
+                            <h5>Альтернатива: EON Heli Bar (51 этаж)</h5>
+                            <p>Если не хочешь платить за Skydeck — поднимись в бар на 51 этаже! Вход бесплатный, но нужно заказать напиток (~150-300k ₫). Самое высокое место для коктейля в Сайгоне!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Korean Dinner -->
+            <div class="location-card">
+                <img src="https://images.unsplash.com/photo-1590301157890-4810ed352733?w=800&q=80" alt="Korean BBQ dinner" class="location-photo">
+                <div class="location-header">
+                    <div class="location-number">🍜</div>
+                    <div class="location-title">
+                        <h3>Корейский ужин</h3>
+                        <div class="location-badges">
+                            <span class="location-badge">🇰🇷 Корейская кухня</span>
+                            <span class="location-badge">🍖 BBQ</span>
+                        </div>
+                        <div class="location-links">
+                            <a href="https://maps.app.goo.gl/6u8HhNM4S5FxqMqN8" target="_blank" class="location-link maps"><i class="fas fa-utensils"></i> Gogi House D3</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="location-body">
+                    <p class="location-desc">
+                        В District 3 много отличных корейских ресторанов! После шоппинга можно вкусно поужинать перед дорогой в Бенче.
+                    </p>
+
+                    <div class="stores-section">
+                        <h4>🍽️ Рекомендации</h4>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">Gogi House</span>
+                                <span class="store-style">🍖 Korean BBQ</span>
+                            </div>
+                            <p class="store-desc">Популярная сеть корейского барбекю. Жаришь мясо сам на столе!</p>
+                            <p class="store-price">💰 200-350k ₫/чел • 📍 Несколько локаций в D3</p>
+                        </div>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">Seoul Garden</span>
+                                <span class="store-style">🍲 Буфет</span>
+                            </div>
+                            <p class="store-desc">All-you-can-eat корейский буфет! Мясо, морепродукты, суши</p>
+                            <p class="store-price">💰 250-400k ₫/чел</p>
+                        </div>
+
+                        <div class="store-card">
+                            <div class="store-card-header">
+                                <span class="store-name">Доширак (быстрый вариант)</span>
+                                <span class="store-style">🍜 Casual</span>
+                            </div>
+                            <p class="store-desc">Bibimbap, рамён, кимчи. Быстро и вкусно!</p>
+                            <p class="store-price">💰 80-150k ₫/чел</p>
+                        </div>
+                    </div>
+
+                    <div class="tip-box">
+                        <span class="tip-icon">🚌</span>
+                        <div class="tip-content">
+                            <h5>Не забудь про автобус!</h5>
+                            <p>После ужина — Grab до автовокзала (~30-40k ₫, 15-20 мин). Последние автобусы в Бенче обычно до 19:00-20:00. Уточни расписание заранее!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>Vietnam Trip 2025 ✈️ 🇻🇳</p>
+            <p class="footer-small">Приятного шоппинга!</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const navHeight = document.querySelector('.nav').offsetHeight;
+                    const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
