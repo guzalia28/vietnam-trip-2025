@@ -1,0 +1,1657 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Места Нячанга - Vietnam Trip 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Quick Access */
+        .quick-access {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .quick-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 20px 15px;
+            background: var(--white);
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            color: var(--text-dark);
+            box-shadow: var(--shadow-card);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .quick-btn:hover {
+            transform: translateY(-5px);
+            border-color: var(--pink-main);
+        }
+
+        .quick-btn.active {
+            background: linear-gradient(135deg, var(--pink-light), var(--purple-light));
+            border-color: var(--pink-main);
+        }
+
+        .quick-btn-icon {
+            font-size: 2rem;
+        }
+
+        .quick-btn-text {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .quick-btn-count {
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        /* Photo Cards */
+        .photo-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .photo-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .photo-card-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .photo-card-content {
+            padding: 20px;
+        }
+
+        .photo-card-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .badge-cafe { background: linear-gradient(135deg, #e8d5ff, #f3e5f5); color: #7c3aed; }
+        .badge-food { background: linear-gradient(135deg, #ffd3b6, #ffe5cc); color: #d4845c; }
+        .badge-beach { background: linear-gradient(135deg, #e8f4fc, #d1ecf1); color: #5ba3c6; }
+        .badge-photo { background: linear-gradient(135deg, #ffe0ec, #fff5f8); color: #ff6b9d; }
+        .badge-shop { background: linear-gradient(135deg, #ffb6c1, #ffc0cb); color: #c71585; }
+        .badge-bar { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        .badge-temple { background: linear-gradient(135deg, #ffd700, #ffec8b); color: #b8860b; }
+
+        .photo-card h4 {
+            font-size: 1.15rem;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        .photo-card-desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .photo-card-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .photo-card-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .photo-card-links {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--pink-light);
+        }
+
+        .card-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .card-link.maps {
+            background: #4285f4;
+            color: white;
+        }
+
+        .card-link.maps:hover {
+            background: #3367d6;
+            transform: translateY(-2px);
+        }
+
+        .card-link.insta {
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            color: white;
+        }
+
+        .card-link.insta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(225,48,108,0.4);
+        }
+
+        /* Grid layouts */
+        .photo-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        /* Category Section */
+        .category-section {
+            padding: 40px 0;
+            border-bottom: 2px solid var(--pink-light);
+        }
+
+        .category-section:last-child {
+            border-bottom: none;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .category-icon {
+            font-size: 2.5rem;
+        }
+
+        .category-header h2 {
+            font-size: 1.8rem;
+            color: var(--text-dark);
+        }
+
+        .category-count {
+            background: var(--pink-light);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--pink-dark);
+            font-weight: 600;
+        }
+
+        /* Back to top */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--pink-main), var(--pink-dark));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 15px rgba(255,107,157,0.4);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 100;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255,107,157,0.5);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .quick-access {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+
+            .quick-btn {
+                padding: 15px 10px;
+            }
+
+            .quick-btn-icon {
+                font-size: 1.5rem;
+            }
+
+            .quick-btn-text {
+                font-size: 0.75rem;
+            }
+
+            .photo-cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .category-header {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating clouds decoration -->
+    <div class="clouds">
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="cloud cloud-3"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header header-small">
+        <div class="header-sparkles">
+            <div class="sparkle"></div>
+            <div class="sparkle"></div>
+            <div class="sparkle"></div>
+            <div class="sparkle"></div>
+        </div>
+        <div class="header-content">
+            <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Главная</a>
+            <h1>🏖️ Места Нячанга</h1>
+            <p class="subtitle">Кафе, рестораны, пляжи и фото-точки</p>
+        </div>
+        <div class="header-wave">
+            <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+                <path d="M0,64 C480,150 960,-20 1440,64 L1440,120 L0,120 Z" fill="#fff5f8"/>
+            </svg>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-link">🏠 Главная</a>
+            <a href="nhatrang.html" class="nav-link">🏖️ Нячанг</a>
+            <a href="hochiminh.html" class="nav-link">🛍️ Хошимин</a>
+            <a href="tips.html" class="nav-link">💡 Полезности</a>
+        </div>
+    </nav>
+
+    <main class="main-content">
+
+        <!-- Quick Access -->
+        <section class="section">
+            <div class="quick-access">
+                <a href="#cafes" class="quick-btn">
+                    <span class="quick-btn-icon">☕</span>
+                    <span class="quick-btn-text">Кафе</span>
+                    <span class="quick-btn-count">24 места</span>
+                </a>
+                <a href="#food" class="quick-btn">
+                    <span class="quick-btn-icon">🍜</span>
+                    <span class="quick-btn-text">Еда</span>
+                    <span class="quick-btn-count">18 мест</span>
+                </a>
+                <a href="#shopping" class="quick-btn">
+                    <span class="quick-btn-icon">🛍️</span>
+                    <span class="quick-btn-text">Шоппинг</span>
+                    <span class="quick-btn-count">12 мест</span>
+                </a>
+                <a href="#photos" class="quick-btn">
+                    <span class="quick-btn-icon">📸</span>
+                    <span class="quick-btn-text">Фото-точки</span>
+                    <span class="quick-btn-count">16 мест</span>
+                </a>
+                <a href="#beaches" class="quick-btn">
+                    <span class="quick-btn-icon">🌊</span>
+                    <span class="quick-btn-text">Пляжи</span>
+                    <span class="quick-btn-count">10 мест</span>
+                </a>
+                <a href="#bars" class="quick-btn">
+                    <span class="quick-btn-icon">🍹</span>
+                    <span class="quick-btn-text">Бары</span>
+                    <span class="quick-btn-count">5 мест</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Cafes Section -->
+        <section id="cafes" class="category-section">
+            <div class="category-header">
+                <span class="category-icon">☕</span>
+                <h2>Кафе</h2>
+                <span class="category-count">24 места</span>
+            </div>
+            <div class="photo-cards-grid">
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&q=80" alt="Parista" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-cafe">📸 Инстаграм</span>
+                        <h4>Parista</h4>
+                        <p class="photo-card-desc">Серые тона, много растений, огромные окна. Идеально для фото и работы.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 50-100k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Parista+Coffee+72+Nguyen+Thi+Minh+Khai+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=600&q=80" alt="GÁC de.art" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-cafe">🎨 Артистик</span>
+                        <h4>GÁC de.art</h4>
+                        <p class="photo-card-desc">Бежевые тона, цветы, зеркала-полумесяцы. Продают цветы!</p>
+                        <div class="photo-card-meta">
+                            <span>💰 40-80k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=GAC+de.art+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=600&q=80" alt="Léhem Café" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-cafe">🇪🇺 Европа</span>
+                        <h4>Léhem Café by Acoustic</h4>
+                        <p class="photo-card-desc">Французское бистро: бархатные шторы, пианино, живая музыка.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 60-120k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Lehem+Cafe+Acoustic+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=600&q=80" alt="Runam Bistro" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-beach">🏖️ Пляж</span>
+                        <h4>Runam Bistro</h4>
+                        <p class="photo-card-desc">Белые стены, вид на пляж. Напротив Intercontinental.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 80-150k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Runam+Bistro+50+Tran+Phu+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1445116572660-236099ec97a0?w=600&q=80" alt="Alpaca" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-cafe">🏠 Уютный</span>
+                        <h4>Alpaca Homestyle Café</h4>
+                        <p class="photo-card-desc">Зелёный фасад с гигантской альпакой! Детская зона.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 60-100k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Alpaca+Homestyle+Cafe+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&q=80" alt="Ola Cafe" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-cafe">🌴 Тропики</span>
+                        <h4>Ola Cafe</h4>
+                        <p class="photo-card-desc">Розовый вход, тропические растения, средиземноморский вайб.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 50-90k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Ola+Cafe+31+Nguyen+Huu+Huan+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80" alt="Jungle Coffee" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-cafe">🌿 Джунгли</span>
+                        <h4>Jungle Coffee</h4>
+                        <p class="photo-card-desc">Тропический оазис. Лучший cà phê muối. Даже туалет — искусство!</p>
+                        <div class="photo-card-meta">
+                            <span>💰 35-70k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Jungle+Coffee+8+Le+Quy+Don+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600&q=80" alt="Sol Coffee" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-cafe">🏯 Азия</span>
+                        <h4>Sol Coffee & Desserts</h4>
+                        <p class="photo-card-desc">Корейский Hanok стиль, терраса, crème brûlée кофе.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 29-60k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Sol+Coffee+Desserts+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1453614512568-c4024d13c247?w=600&q=80" alt="Yen Coffee" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-cafe">🪞 Минимализм</span>
+                        <h4>Yen Coffee n More</h4>
+                        <p class="photo-card-desc">Геометрические зеркала, луна на стене. Кокосовый кофе.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 40-70k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Yen+Coffee+n+More+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=600&q=80" alt="Rainforest" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-cafe">🌳 Природа</span>
+                        <h4>Rainforest</h4>
+                        <p class="photo-card-desc">Многоуровневое кафе-дерево. Магическая атмосфера!</p>
+                        <div class="photo-card-meta">
+                            <span>💰 50-100k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Rainforest+Cafe+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&q=80" alt="City Fox" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-cafe">🧱 Лофт</span>
+                        <h4>City Fox Café</h4>
+                        <p class="photo-card-desc">Кирпичные стены, уютные диваны. Пицца и бургеры.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 40-80k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=City+Fox+Cafe+5+Le+Thanh+Ton+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80" alt="Ume Cafe" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-cafe">🏮 Восток</span>
+                        <h4>Ume Cafe</h4>
+                        <p class="photo-card-desc">Драконы, китайские фонари, яичные тарты.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 40-70k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Ume+Cafe+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&q=80" alt="An Café" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-cafe">🌸 Сад</span>
+                        <h4>An Café</h4>
+                        <p class="photo-card-desc">Сад с прудами и рыбками. Винтажный дизайн.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 40-60k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=An+Cafe+55+Le+Thanh+Ton+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80" alt="Artisan Cafe" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-cafe">✨ Магия</span>
+                        <h4>Artisan Cafe & Eatery</h4>
+                        <p class="photo-card-desc">Плавающий туман, сказочная тропинка. Бургер-день по средам!</p>
+                        <div class="photo-card-meta">
+                            <span>💰 60-120k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Artisan+Cafe+Eatery+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=600&q=80" alt="Café Culture" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-cafe">🍳 Бранч</span>
+                        <h4>Café Culture</h4>
+                        <p class="photo-card-desc">Британский владелец. Лучшие панкейки!</p>
+                        <div class="photo-card-meta">
+                            <span>💰 80-150k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Cafe+Culture+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1445116572660-236099ec97a0?w=600&q=80" alt="Fairy Tale" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-cafe">🧚 Сказка</span>
+                        <h4>The Fairy Tale Café</h4>
+                        <p class="photo-card-desc">Сказочный декор, игривые детали.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 40-80k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Fairy+Tale+Cafe+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=600&q=80" alt="Bonjour" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-cafe">🇫🇷 Романтика</span>
+                        <h4>Bonjour Coffee</h4>
+                        <p class="photo-card-desc">Французский стиль, белый цвет, уютно для пар.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 40-70k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Bonjour+Coffee+113+Hoang+Van+Thu+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80" alt="Hon Chong Coffee" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-beach">🌅 Вид</span>
+                        <h4>Hon Chong Coffee</h4>
+                        <p class="photo-card-desc">На холме у Hon Chong. Панорама моря.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 40-80k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Hon+Chong+Coffee+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=600&q=80" alt="Altitude" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-bar">🌃 Руфтоп</span>
+                        <h4>Altitude Rooftop</h4>
+                        <p class="photo-card-desc">28 этаж Sheraton. Вид на закат.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 80-200k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Altitude+Rooftop+Sheraton+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600&q=80" alt="Tron Cafe" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-cafe">🔵 Модерн</span>
+                        <h4>Tron Cafe</h4>
+                        <p class="photo-card-desc">Современный дизайн, уютная атмосфера.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 40-70k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Tron+Cafe+18+Nguyen+Thien+Thuat+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=600&q=80" alt="Amazon Coffee" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-cafe">🌴 Люкс</span>
+                        <h4>Amazon Coffee & Bar</h4>
+                        <p class="photo-card-desc">Роскошный интерьер, уникальный стиль.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 50-150k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Amazon+Coffee+Bar+72+Tran+Phu+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&q=80" alt="Sunday Coffee" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-cafe">🎨 Витражи</span>
+                        <h4>Sunday Coffee</h4>
+                        <p class="photo-card-desc">Витражные окна на полу! Детская зона, 150+ мест.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 25-60k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Sunday+Coffee+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1453614512568-c4024d13c247?w=600&q=80" alt="Toatina Cafe" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-cafe">🕰️ Винтаж</span>
+                        <h4>Toatina Cafe</h4>
+                        <p class="photo-card-desc">Винтажный дизайн, уникальные фото-уголки.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 30-60k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Toatina+Cafe+35+Ngo+Duc+Ke+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&q=80" alt="blu:m café" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-cafe">⚪ Минимализм</span>
+                        <h4>blu:m café</h4>
+                        <p class="photo-card-desc">Белый минимализм, круглые окна, авокадо-кокос смузи.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 40-70k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=blum+cafe+9+Nguyen+Huu+Huan+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Food Section -->
+        <section id="food" class="category-section">
+            <div class="category-header">
+                <span class="category-icon">🍜</span>
+                <h2>Еда и рестораны</h2>
+                <span class="category-count">18 мест</span>
+            </div>
+            <div class="photo-cards-grid">
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&q=80" alt="Lac Canh Beef" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-food">🔥 Легенда</span>
+                        <h4>Lac Canh Beef</h4>
+                        <p class="photo-card-desc">Жаришь мясо сам на углях. Секретный маринад с мёдом. С 1975!</p>
+                        <div class="photo-card-meta">
+                            <span>💰 160k ₫/порция</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Lac+Canh+Beef+44+Nguyen+Binh+Khiem+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600&q=80" alt="Nhat Phong 3" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-food">🦀 Морепродукты</span>
+                        <h4>Nhat Phong 3</h4>
+                        <p class="photo-card-desc">2 этажа с видом на реку. Улица Cu Lao Trung — рай для морепродуктов!</p>
+                        <div class="photo-card-meta">
+                            <span>💰 ~560k ₫/двоих</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Nhat+Phong+3+63B+Cu+Lao+Trung+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80" alt="Bo Ke Restaurant" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-food">🦐 Река</span>
+                        <h4>Bo Ke Restaurant</h4>
+                        <p class="photo-card-desc">Прямо у воды, живые морепродукты в тазах.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 200-400k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Bo+Ke+Restaurant+42+Cu+Lao+Trung+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600&q=80" alt="Ben Thuyen" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-food">🦞 Лобстеры</span>
+                        <h4>Ben Thuyen</h4>
+                        <p class="photo-card-desc">Редкая рыба, лобстеры, большой выбор.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 300-600k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Ben+Thuyen+98C+Cu+Lao+Trung+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80" alt="Costa Seafood" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-food">🦐 Свежесть</span>
+                        <h4>Costa Seafood</h4>
+                        <p class="photo-card-desc">Живые морепродукты в аквариумах.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 200-500k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Costa+Seafood+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&q=80" alt="Den Long Do" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-food">🏮 Атмосфера</span>
+                        <h4>Den Long Do</h4>
+                        <p class="photo-card-desc">Декор в стиле Хойана. Красные фонари.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 150-300k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Den+Long+Do+135+Hoang+Van+Thu+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80" alt="Mix Greek" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-food">🇬🇷 Греция</span>
+                        <h4>Mix Greek Restaurant</h4>
+                        <p class="photo-card-desc">Огромные платтеры! Фалафель, сувлаки, хумус.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 150-350k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Mix+Greek+Restaurant+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80" alt="Champa Garden" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-food">🏯 История</span>
+                        <h4>Champa Garden</h4>
+                        <p class="photo-card-desc">На острове у реки Кай. Кухня Чампа.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 200-400k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Champa+Garden+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=600&q=80" alt="Bún Cá" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-food">🍲 Локал</span>
+                        <h4>Bún Cá Hạnh Nhiên</h4>
+                        <p class="photo-card-desc">Только 4 блюда — и все идеальные.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 35-50k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Bun+Ca+Hanh+Nhien+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?w=600&q=80" alt="Louisiane Brewhouse" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-beach">🍺 Пляж</span>
+                        <h4>Louisiane Brewhouse</h4>
+                        <p class="photo-card-desc">Пляж + бассейн + пивоварня. Своё крафтовое пиво!</p>
+                        <div class="photo-card-meta">
+                            <span>💰 150-400k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Louisiane+Brewhouse+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80" alt="Skylight Restaurant" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-bar">🌃 Вид</span>
+                        <h4>Skylight Restaurant</h4>
+                        <p class="photo-card-desc">43 этаж Havana. Панорама всего Нячанга.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 300-800k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Skylight+Nha+Trang+Havana" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80" alt="Hispania" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-food">🇪🇸 Испания</span>
+                        <h4>Hispania</h4>
+                        <p class="photo-card-desc">Топ-25 ресторанов Азии! Испанская кухня.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 500k+ ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Hispania+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&q=80" alt="Yen's Restaurant" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-food">🏠 Домашняя</span>
+                        <h4>Yen's Restaurant</h4>
+                        <p class="photo-card-desc">Уютно, вкусно. Бронируй заранее!</p>
+                        <div class="photo-card-meta">
+                            <span>💰 100-200k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Yens+Restaurant+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80" alt="Chuon Chuon Kim" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-food">🇰🇷 Популярный</span>
+                        <h4>Chuon Chuon Kim</h4>
+                        <p class="photo-card-desc">Хит у корейцев. Красивая подача.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 35-150k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Chuon+Chuon+Kim+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=600&q=80" alt="Sandals" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-beach">🌊 Средиземноморье</span>
+                        <h4>Sandals (Sailing Club)</h4>
+                        <p class="photo-card-desc">Люкс-интерьер, ингредиенты Pacific Rim.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 200-500k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Sailing+Club+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80" alt="Boma Beach Club" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-beach">🏖️ Закат</span>
+                        <h4>Boma Beach Club</h4>
+                        <p class="photo-card-desc">Пляж + ресторан. Закаты, коктейли.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 150-400k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Boma+Beach+Club+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600&q=80" alt="Canh Buom" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-food">🦀 Бюджет</span>
+                        <h4>Canh Buom Seafood</h4>
+                        <p class="photo-card-desc">Вид на реку, доступные цены от 30k.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 100-250k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Canh+Buom+Seafood+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80" alt="CCK Seafood" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-food">🍤 Студенты</span>
+                        <h4>CCK Seafood</h4>
+                        <p class="photo-card-desc">Маленький, но свежие морепродукты.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 80-200k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=CCK+Seafood+6+Ngo+Sy+Lien+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Shopping Section -->
+        <section id="shopping" class="category-section">
+            <div class="category-header">
+                <span class="category-icon">🛍️</span>
+                <h2>Шоппинг</h2>
+                <span class="category-count">12 мест</span>
+            </div>
+            <div class="photo-cards-grid">
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=600&q=80" alt="Dam Market" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-shop">🏛️ Главный</span>
+                        <h4>Dam Market (Chợ Đầm)</h4>
+                        <p class="photo-card-desc">3-этажный рынок в форме лотоса. Всё от еды до одежды.</p>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Dam+Market+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=600&q=80" alt="Night Market" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-shop">🌙 Вечер</span>
+                        <h4>Ночной рынок</h4>
+                        <p class="photo-card-desc">Напротив башни Лотос. 17:00–23:00. Сувениры и еда.</p>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Night+Market+Tran+Phu+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=600&q=80" alt="Nha Trang Center" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-shop">🏢 Молл</span>
+                        <h4>Nha Trang Center</h4>
+                        <p class="photo-card-desc">Первый ТЦ города. Вид на море с верхних этажей.</p>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Nha+Trang+Center+20+Tran+Phu" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&q=80" alt="Lotte Mart" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-shop">🛒 Супермаркет</span>
+                        <h4>Lotte Mart</h4>
+                        <p class="photo-card-desc">4 этажа: продукты, кинотеатр CGV, фуд-корт.</p>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Lotte+Mart+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=600&q=80" alt="Vincom Plaza" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-shop">🏬 Модерн</span>
+                        <h4>Vincom Plaza</h4>
+                        <p class="photo-card-desc">Бренды, фуд-корт, развлечения.</p>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Vincom+Plaza+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=600&q=80" alt="Xom Moi Market" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-shop">🍜 Локальный</span>
+                        <h4>Xom Moi Market</h4>
+                        <p class="photo-card-desc">Лучший завтрак! Фо, рыбная лапша.</p>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Xom+Moi+Market+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=600&q=80" alt="Vinh Hai Market" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-shop">🛒 Меньше туристов</span>
+                        <h4>Vinh Hai Market</h4>
+                        <p class="photo-card-desc">Местные цены, меньше толпы.</p>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Vinh+Hai+Market+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80" alt="Vinh Luong Market" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-shop">🐟 Рыба</span>
+                        <h4>Vinh Luong Market</h4>
+                        <p class="photo-card-desc">У рыбного порта. Самые свежие морепродукты.</p>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Vinh+Luong+Market+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=600&q=80" alt="Hoang Yen Tailor" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-shop">👗 Пошив</span>
+                        <h4>Hoang Yen Tailor</h4>
+                        <p class="photo-card-desc">Шьют за 24 часа! Шёлк, ао зай.</p>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Hoang+Yen+Tailor+128+Nguyen+Thien+Thuat+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=600&q=80" alt="XQ Handicraft" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-shop">🎨 Искусство</span>
+                        <h4>XQ Handicraft</h4>
+                        <p class="photo-card-desc">Вышитые картины ручной работы.</p>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=XQ+Handicraft+64+Tran+Phu+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&q=80" alt="Go! Market" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-shop">🛒 Гипермаркет</span>
+                        <h4>Go! Market (Big C)</h4>
+                        <p class="photo-card-desc">Большой выбор, хорошие цены.</p>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Go+Market+Big+C+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&q=80" alt="MM Mega Market" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-shop">📦 Опт</span>
+                        <h4>MM Mega Market</h4>
+                        <p class="photo-card-desc">Оптовый супермаркет типа Costco.</p>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=MM+Mega+Market+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Photo Spots Section -->
+        <section id="photos" class="category-section">
+            <div class="category-header">
+                <span class="category-icon">📸</span>
+                <h2>Фото-точки</h2>
+                <span class="category-count">16 мест</span>
+            </div>
+            <div class="photo-cards-grid">
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80" alt="Marina Beach Club" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-photo">🌅 Качели</span>
+                        <h4>Marina Beach Club</h4>
+                        <p class="photo-card-desc">Качели в море! Инста-место №1.</p>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Marina+Beach+Club+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80" alt="Skylight Rooftop" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-photo">🌃 Высота</span>
+                        <h4>Skylight Rooftop</h4>
+                        <p class="photo-card-desc">Самый высокий маяк (151м). Стеклянный пол!</p>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Skylight+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?w=600&q=80" alt="Tram Huong Tower" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-photo">🗼 Символ</span>
+                        <h4>Башня Trầm Hương</h4>
+                        <p class="photo-card-desc">Символ Нячанга. LED-подсветка ночью.</p>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Tram+Huong+Tower+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1528127269322-539801943592?w=600&q=80" alt="Po Nagar" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-temple">🏛️ История</span>
+                        <h4>Po Nagar Towers</h4>
+                        <p class="photo-card-desc">Чамские башни 7-12 века.</p>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Po+Nagar+Cham+Towers+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1540202404-1b927e27fa8b?w=600&q=80" alt="Long Son Pagoda" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-temple">🪷 Пагода</span>
+                        <h4>Long Son Pagoda</h4>
+                        <p class="photo-card-desc">Белый Будда (14м). 152 ступени.</p>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Long+Son+Pagoda+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1504214208698-ea1916a2195a?w=600&q=80" alt="Vinpearl Cable Car" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-photo">🚡 Море</span>
+                        <h4>Vinpearl Cable Car</h4>
+                        <p class="photo-card-desc">3.3 км над морем!</p>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Vinpearl+Cable+Car+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600&q=80" alt="Thap Ba Hot Springs" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-photo">♨️ Грязи</span>
+                        <h4>Thap Ba Hot Springs</h4>
+                        <p class="photo-card-desc">Грязевые ванны = фотогенично.</p>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Thap+Ba+Hot+Spring+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80" alt="Hon Chong" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-photo">🪨 Скалы</span>
+                        <h4>Hon Chong</h4>
+                        <p class="photo-card-desc">Скалы с видом на море.</p>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Hon+Chong+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80" alt="Ba Ho Waterfall" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-photo">🏞️ Водопады</span>
+                        <h4>Ba Ho Waterfall</h4>
+                        <p class="photo-card-desc">Три озера, джунгли.</p>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Ba+Ho+Waterfall+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80" alt="Diep Son Island" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-photo">🛤️ Дорога</span>
+                        <h4>Diep Son Island</h4>
+                        <p class="photo-card-desc">Дорога посреди моря!</p>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Diep+Son+Island" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?w=600&q=80" alt="Площадь 2/4" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-photo">🌺 Город</span>
+                        <h4>Площадь 2/4</h4>
+                        <p class="photo-card-desc">Фонтаны, башня Лотос.</p>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=2+4+Square+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1555921015-5532091f6026?w=600&q=80" alt="Nha Trang Cathedral" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-photo">⛪ Готика</span>
+                        <h4>Nha Trang Cathedral</h4>
+                        <p class="photo-card-desc">Готический собор на холме.</p>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Nha+Trang+Cathedral" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1504214208698-ea1916a2195a?w=600&q=80" alt="Vinpearl Harbour" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-photo">🎡 Новое</span>
+                        <h4>Vinpearl Harbour</h4>
+                        <p class="photo-card-desc">Открылся 2024! Фото-зоны.</p>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Vinpearl+Harbour+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80" alt="Bai Duong Beach" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-photo">🌅 Закат</span>
+                        <h4>Bai Duong Beach</h4>
+                        <p class="photo-card-desc">Местный пляж для силуэтов.</p>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Bai+Duong+Beach+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80" alt="Bach Dang Park" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-photo">🌳 Парк</span>
+                        <h4>Bach Dang Park</h4>
+                        <p class="photo-card-desc">Чистый пляж, мало туристов.</p>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Bach+Dang+Park+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80" alt="Hon Mun Island" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-beach">🤿 Под водой</span>
+                        <h4>Hon Mun Island</h4>
+                        <p class="photo-card-desc">Снорклинг, кораллы.</p>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Hon+Mun+Island+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Beaches Section -->
+        <section id="beaches" class="category-section">
+            <div class="category-header">
+                <span class="category-icon">🌊</span>
+                <h2>Пляжи и активности</h2>
+                <span class="category-count">10 мест</span>
+            </div>
+            <div class="photo-cards-grid">
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80" alt="Tran Phu Beach" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-beach">🏖️ Главный</span>
+                        <h4>Tran Phu Beach</h4>
+                        <p class="photo-card-desc">7 км центрального пляжа.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 50-100k ₫ лежак</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Tran+Phu+Beach+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80" alt="Doc Let Beach" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-beach">🏝️ Чистый</span>
+                        <h4>Doc Let Beach</h4>
+                        <p class="photo-card-desc">45 км на север. Белый песок, мало туристов!</p>
+                        <div class="photo-card-meta">
+                            <span>💰 Бесплатно</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Doc+Let+Beach" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80" alt="Bai Tru Beach" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-beach">🏖️ Тихий</span>
+                        <h4>Bai Tru Beach</h4>
+                        <p class="photo-card-desc">На Hon Mieu. Белый песок.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 Лодка ~100k</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Bai+Tru+Beach+Hon+Mieu" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80" alt="Hon Mun Island" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-beach">🤿 Снорклинг</span>
+                        <h4>Hon Mun Island</h4>
+                        <p class="photo-card-desc">Морской заповедник. Кораллы!</p>
+                        <div class="photo-card-meta">
+                            <span>💰 от 450k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Hon+Mun+Island" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600&q=80" alt="Hon Tam Island" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-beach">♨️ Релакс</span>
+                        <h4>Hon Tam Island</h4>
+                        <p class="photo-card-desc">Грязевые ванны + пляж.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 от 790k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Hon+Tam+Island+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80" alt="Whale Island" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-beach">🐋 Уединение</span>
+                        <h4>Whale Island</h4>
+                        <p class="photo-card-desc">Почти нет туристов. Дайвинг.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 от 1M ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Whale+Island+Vietnam" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1504214208698-ea1916a2195a?w=600&q=80" alt="VinWonders" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-beach">🎢 Парк</span>
+                        <h4>VinWonders</h4>
+                        <p class="photo-card-desc">Аквапарк + аттракционы.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 ~880k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=VinWonders+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600&q=80" alt="Thap Ba Mud Baths" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-beach">🛁 СПА</span>
+                        <h4>Thap Ba Mud Baths</h4>
+                        <p class="photo-card-desc">Грязи, горячие источники.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 от 200k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Thap+Ba+Hot+Spring" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80" alt="Yang Bay Waterfall" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-beach">🌊 Водопад</span>
+                        <h4>Yang Bay Waterfall</h4>
+                        <p class="photo-card-desc">Скрытый водопад в горах.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 ~100k вход</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Yang+Bay+Waterfall" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600&q=80" alt="I-Resort" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-beach">♨️ Люкс</span>
+                        <h4>I-Resort</h4>
+                        <p class="photo-card-desc">Премиум грязевые ванны.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 от 300k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=I+Resort+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Bars Section -->
+        <section id="bars" class="category-section">
+            <div class="category-header">
+                <span class="category-icon">🍹</span>
+                <h2>Бары</h2>
+                <span class="category-count">5 мест</span>
+            </div>
+            <div class="photo-cards-grid">
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80" alt="Skylight Rooftop Bar" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-bar">🌃 Вид</span>
+                        <h4>Skylight Rooftop Bar</h4>
+                        <p class="photo-card-desc">3 бара, бассейн, маяк, skywalk.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 150-400k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Skylight+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80" alt="Sailing Club" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-bar">🏖️ Пляж</span>
+                        <h4>Sailing Club</h4>
+                        <p class="photo-card-desc">Культовый клуб с 90-х.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 100-300k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Sailing+Club+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?w=600&q=80" alt="Louisiane Brewhouse" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-bar">🍺 Пиво</span>
+                        <h4>Louisiane Brewhouse</h4>
+                        <p class="photo-card-desc">Пивоварня + пляж + бассейн.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 80-200k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Louisiane+Brewhouse" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=600&q=80" alt="Altitude Rooftop" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-bar">🌆 Руфтоп</span>
+                        <h4>Altitude Rooftop</h4>
+                        <p class="photo-card-desc">В Sheraton. Коктейли с видом.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 120-300k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=Altitude+Sheraton+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80" alt="ZIMA Beach Club" class="photo-card-image">
+                    <div class="photo-card-content">
+                        <span class="photo-card-badge badge-bar">🎶 Музыка</span>
+                        <h4>ZIMA Beach Club</h4>
+                        <p class="photo-card-desc">Новый пляжный клуб, DJ.</p>
+                        <div class="photo-card-meta">
+                            <span>💰 100-300k ₫</span>
+                        </div>
+                        <div class="photo-card-links">
+                            <a href="https://maps.google.com/?q=ZIMA+Beach+Club+Nha+Trang" target="_blank" class="card-link maps"><i class="fas fa-map-marker-alt"></i> Карта</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Back to top button -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>Vietnam Trip 2026 ✈️ 🇻🇳</p>
+            <p class="footer-small">Приятного путешествия!</p>
+        </div>
+    </footer>
+
+    <script>
+        // Back to top button
+        const backToTop = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Smooth scroll for quick access links
+        document.querySelectorAll('.quick-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const navHeight = document.querySelector('.nav').offsetHeight;
+                    const targetPosition = target.offsetTop - navHeight - 20;
+                    window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
